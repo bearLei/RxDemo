@@ -103,7 +103,9 @@ javadoc {
         options.addStringOption("stylesheetfile", rootProject.file("./gradle/stylesheet.css").toString())
     }
 }
-
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
 animalsniffer {
     annotation = "io.reactivex.internal.util.SuppressAnimalSniffer"
 }

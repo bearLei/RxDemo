@@ -1,5 +1,12 @@
 package io.reactivex.test;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Scheduler;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * author : lei
  * e-mail : xiong.lei@ubtrobot.com
@@ -9,7 +16,25 @@ package io.reactivex.test;
  */
 public class ObservableTest {
     public static final void main(String[] args){
-        System.out.println("hehhhh");
+     testObservable();
+    }
 
+
+    private static void testObservable(){
+        System.out.println("打印---->");
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                for (int i = 0; i < 10; i++) {
+                    emitter.onNext(i);
+                }
+            }
+        })
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        System.out.println("打印---->"+integer);
+                    }
+                });
     }
 }
