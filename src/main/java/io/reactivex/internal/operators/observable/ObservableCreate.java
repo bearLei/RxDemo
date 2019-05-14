@@ -24,6 +24,15 @@ import io.reactivex.internal.queue.SpscLinkedArrayQueue;
 import io.reactivex.internal.util.AtomicThrowable;
 import io.reactivex.plugins.RxJavaPlugins;
 
+/**
+ * 1:该类是Observable.create传入的参数也就是ObservableOnSubscribe的包装类
+ * 2:当开始订阅的时候会调用该类的subscribeActual方法
+ * 3: 内部创建了个Emitter
+ * 4:调用observer的onSubscibe完成订阅
+ * 5:默认的发射器实现类也就是CreateEmitter
+ * 6:发射器的的方法调用会回调到Observer的相应方法中
+ * @param <T>
+ */
 public final class ObservableCreate<T> extends Observable<T> {
     final ObservableOnSubscribe<T> source;
 
@@ -33,7 +42,7 @@ public final class ObservableCreate<T> extends Observable<T> {
 
     @Override
     protected void subscribeActual(Observer<? super T> observer) {
-        CreateEmitter<T> parent = new CreateEmitter<T>(observer);
+         CreateEmitter<T> parent = new CreateEmitter<T>(observer);
         observer.onSubscribe(parent);
 
         try {
@@ -44,9 +53,7 @@ public final class ObservableCreate<T> extends Observable<T> {
         }
     }
 
-    static final class CreateEmitter<T>
-    extends AtomicReference<Disposable>
-    implements ObservableEmitter<T>, Disposable {
+    static final class CreateEmitter<T> extends AtomicReference<Disposable> implements ObservableEmitter<T>, Disposable {
 
         private static final long serialVersionUID = -3434801548987643227L;
 
